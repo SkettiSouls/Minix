@@ -168,24 +168,9 @@ in {
     ];
 
     systemd.services =
-      {
-        tmuxServer = {
-          description = "Master Tmux server that runs on boot";
-          wantedBy = ["multi-user.target"];
-
-          serviceConfig = {
-            Type = "forking";
-            User = cfg.user;
-            ExecStart = "${pkgs.tmux}/bin/tmux new-session -s master -d";
-            ExecStop = "${pkgs.tmux}/bin/tmux kill-session -t master";
-          };
-        };
-      }
-      // perEnabledInstance (name: icfg: {
+      perEnabledInstance (name: icfg: {
         description = "Minecraft Server ${name}";
         wantedBy = ["multi-user.target"];
-        partOf = ["tmuxServer.service"];
-        after = ["tmuxServer.service"];
 
         path = [icfg.jvmPackage pkgs.bash] ++ icfg.serviceExtraPackages;
 
@@ -205,18 +190,9 @@ in {
           RemainAfterExit = true;
           KillMode = "none";
           KillSignal = "SIGCONT";
-          ExecStart = concatStrings [
-            "${pkgs.tmux}/bin/tmux new-session -s ${fullname} -d"
-            " '${WorkingDirectory}/start.sh'"
-          ];
-          ExecStop = concatStrings [
-            "${pkgs.tmux}/bin/tmux send-keys -t ${fullname}:0.0"
-            " 'say SERVER SHUTTING DOWN. Saving map...' C-m"
-            " 'save-all' C-m"
-            " 'stop' C-m"
-            "; ${pkgs.coreutils}/bin/sleep 10"
-            "; ${pkgs.tmux}/bin/tmux kill-session -t ${fullname}"
-          ];
+          ExecStart = ''
+            ${WorkingDirectory}/start.sh
+          '';
           User = cfg.user;
           Group = cfg.group;
           StateDirectory = "minix/${fullname}";
