@@ -241,8 +241,10 @@ in {
 
     users.users = optionalAttrs (cfg.user == "mc") {
       mc = {
+        createHome = true;
         group = cfg.group;
-        home = cfg.dataDir;
+        home = "/var/lib/minix";
+        isSystemUser = true;
       };
     };
 
