@@ -184,7 +184,6 @@ in {
 
         serviceConfig = let
           WorkingDirectory = "/var/lib/minix/${name}";
-          fullname = "minix-${name}";
         in {
           Type = "oneshot";
           RemainAfterExit = true;
@@ -195,7 +194,7 @@ in {
           '';
           User = cfg.user;
           Group = cfg.group;
-          StateDirectory = "minix/${fullname}";
+          StateDirectory = "minix/${name}";
           inherit WorkingDirectory;
         };
 
