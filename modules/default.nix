@@ -171,6 +171,7 @@ in {
       perEnabledInstance (name: icfg: {
         description = "Minecraft Server ${name}";
         wantedBy = ["multi-user.target"];
+        after = [ "network.target" ];
 
         path = [icfg.jvmPackage pkgs.bash] ++ icfg.serviceExtraPackages;
 
@@ -180,18 +181,15 @@ in {
           MCRCON_PASS = "whatisloveohbabydonthurtmedonthurtmenomore";
         };
 
-        # Add script option instead of running start.sh
+        # TODO: Add script option instead of running start.sh
 
         serviceConfig = let
           WorkingDirectory = "/var/lib/minix/${name}";
         in {
-          Type = "oneshot";
-          RemainAfterExit = true;
-          KillMode = "none";
-          KillSignal = "SIGCONT";
           ExecStart = ''
             ${WorkingDirectory}/start.sh
           '';
+          Restart = "always";
           User = cfg.user;
           Group = cfg.group;
           StateDirectory = "minix/${name}";
