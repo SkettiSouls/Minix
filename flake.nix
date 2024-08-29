@@ -1,5 +1,5 @@
 {
-  description = "Minix: NixOS module for minecraft servers";
+  description = "Nix-MC: NixOS module for managing multiple minecraft servers";
 
   inputs = {
     nixpkgs = {

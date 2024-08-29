@@ -1,6 +1,6 @@
-# Minix
+# Nix-MC
 
-NixOS Minecraft Servers
+NixOS Managed Minecraft Servers
 
 This is a Nix flake with a module `services.nix-mc` that allows
 you to run multiple instances of modded Minecraft servers.
@@ -82,8 +82,6 @@ If you run multiple instances on the same machine, you might want to look into
 defining CNAME and SRV records for each of them, to make it easier for your
 friends to connect.
 
-Assuming you have friends. I wouldn't know what that's like.
-
 ### Modded
 
 I have yet to see two modpacks that use the same procedure for installation
@@ -92,7 +90,7 @@ The module makes no real attempt at guessing how to package or run your
 modpack. It just provides the necessary options to define a folder for you
 to dump the files in, and it will call a script `start.sh` in this folder.
 An environment variable `$JVMOPTS` will be set based on the nix settings
-for the instance. Using this option is up to you in your `start.sh` script.
+for the instance. Using this option is up to you in your start script.
 
 #### Download and installation
 
@@ -104,9 +102,9 @@ certainly will want to override some mod settings.
 
 It is far easier to just download the server pack to your computer, do
 whatever it is the modpack author wants you to do to populate files and
-folders, adjust things to your liking, and wrap it all up in a `start.sh`
+folders, adjust things to your liking, and wrap it all up in a start
 script that you either write yourself or adapt from one of the scripts
-provided with the modpack.
+provided with the modpack. A general purpose default is generated for you.
 
 You can also use the package `curseforge-server-downloader` which is
 exposed by this flake. [Link to its Github page](https://github.com/Malpiszonekx4/curseforge-server-downloader)
@@ -128,14 +126,14 @@ on your instance configuration. This allows you to handle your flags and
 memory with nix, but still let modpack authors do their thing with regard to
 server launch.
 
-A simple example:
+A simple example (and also the generated default):
 
-```sh
-exec java -server "${JVMOPTS[@]}" -jar forge-1.12.2-14.23.5.2847-universal.jar nogui"
+```bash
+java $JVMOPTS -jar server.jar --nogui"
 ```
 
 Depending on what exactly the modpack uses to launch, you may or may not
-be able to pass the `$JVMOPTS` variable along. In that case, you'll be
+be able to pass the `$JVMOPTS` variable along. In the latter case, you'll be
 stuck setting the flags manually in whatever format they use.
 
 #### Rsync module
