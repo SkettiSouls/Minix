@@ -16,6 +16,12 @@
     pkgs.writeText "server.properties"
     (mkOptionText serverConfig);
 
+  startFile = script:
+    pkgs.writeShellScript "start.sh" ''
+      cd "$(dirname "$0")"
+      ${script}
+    '';
+
   encodeOptionValue = value: let
     encodeBool = value:
       if value
@@ -181,8 +187,6 @@ in {
           MCRCON_PASS = "whatisloveohbabydonthurtmedonthurtmenomore";
         };
 
-        # TODO: Add script option instead of running start.sh
-
         serviceConfig = let
           WorkingDirectory = "/var/lib/minix/${name}";
         in {
@@ -209,6 +213,9 @@ in {
           # TODO: check if any changes were made. Don't start if so
           cp ${serverPropertiesFile icfg.serverConfig} server.properties
           chmod 644 server.properties
+
+          # Generate start.sh
+          cp ${startFile icfg.startScript} start.sh
         '';
       });
 

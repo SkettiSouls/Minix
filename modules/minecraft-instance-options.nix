@@ -159,5 +159,21 @@ in {
         A list of packages that will be made available to your launch script.
       '';
     };
+
+    jarFile = mkOption {
+      type = types.str;
+      default = "server.jar";
+      description = ''
+        File name of the server jar in the generated start script.
+      '';
+    };
+
+    startScript = mkOption {
+      type = with types; either str lines;
+      default = "java $JVMOPTS -jar ${config.jarFile} --nogui";
+      description = ''
+        Bash script to be generated at <literal>/var/lib/minix/${name}/script.sh</literal>.
+      '';
+    };
   };
 }
