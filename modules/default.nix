@@ -75,20 +75,20 @@ in {
       };
 
       user = mkOption {
-        default = "mc";
+        default = "minecraft";
         type = types.str;
         description = ''
           The name of the user who is going to be running
-          the servers. Defaults to "mc".
+          the servers. Defaults to "minecraft".
         '';
       };
 
       group = mkOption {
-        default = "mc";
+        default = "minecraft";
         type = types.str;
         description = ''
           The name of the group of the user who is going to
-          be running the servers. Defaults to "mc".
+          be running the servers. Defaults to "minecraft".
         '';
       };
 
@@ -214,8 +214,8 @@ in {
         '';
       });
 
-    users.users = optionalAttrs (cfg.user == "mc") {
-      mc = {
+    users.users = optionalAttrs (cfg.user == "minecraft") {
+      minecraft = {
         createHome = true;
         group = cfg.group;
         home = "/var/lib/minecraft";
@@ -223,8 +223,8 @@ in {
       };
     };
 
-    users.groups = optionalAttrs (cfg.group == "mc") {
-      mc = {};
+    users.groups = optionalAttrs (cfg.group == "minecraft") {
+      minecraft = {};
     };
 
     networking.firewall.allowedUDPPorts = queryPorts;
