@@ -172,7 +172,7 @@ in {
       type = with types; either str lines;
       default = "java $JVMOPTS -jar ${config.jarFile} --nogui";
       description = ''
-        Bash script to be generated at <literal>/var/lib/minix/${name}/script.sh</literal>.
+        Bash script to be generated at <literal>/var/lib/minecraft/${name}/script.sh</literal>.
       '';
     };
   };

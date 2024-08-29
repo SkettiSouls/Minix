@@ -33,9 +33,9 @@
         attrs (import nixpkgs {inherit system;}));
   in {
     nixosModules = {
-      minix = import ./modules;
+      nix-mc = import ./modules;
 
-      default = self.nixosModules.minix;
+      default = self.nixosModules.nix-mc;
     };
 
     packages = perSystem (pkgs: {

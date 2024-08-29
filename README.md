@@ -2,7 +2,7 @@
 
 NixOS Minecraft Servers
 
-This is a Nix flake with a module `services.minix` that allows
+This is a Nix flake with a module `services.nix-mc` that allows
 you to run multiple instances of modded Minecraft servers.
 
 ## Usage
@@ -11,24 +11,24 @@ In your `flake.nix`
 
 ```nix
 {
-  inputs.minix.url = "github:matt1432/minix";
+  inputs.nix-mc.url = "github:skettisouls/nix-mc";
 }
 ```
 
 In your server config:
 
 ```nix
-{minix, ...}:
+{ inputs, ... }:
 {
-  imports = [minix.module];
+  imports = [ inputs.nix-mc.nixosModules.nix-mc ];
 
-  services.minix = {
+  services.nix-mc = {
     # This is mandatory, sorry.
     eula = true;
 
     instances = {
       # The name will be used for the state folder.
-      # In this case, the folder is `/var/lib/minix/e2es`.
+      # In this case, the folder is `/var/lib/minecraft/e2es`.
       e2es = {
         enable = true;
 
@@ -150,8 +150,8 @@ access to the appropriate minecraft state folder.
 
 ### Under the hood
 
-Each defined instance runs as its own user `minix-${name}` and has
-its own state folder in `/var/lib/minix/${name}`.
+Each defined instance runs as its own user `mc-${name}` and has
+its own state folder in `/var/lib/minecraft/${name}`.
 
 In order to "install" a modpack, you put all the files for the pack in this
 folder.
@@ -159,4 +159,4 @@ folder.
 Whether you do this using the configured rsync module or any other way is
 irrelevant. Just make sure the entire folder is owned by the correct user.
 
-The server will be run as a systemd unit with the name `minix-${name}`.
+The server will be run as a systemd unit with the name `mc-${name}`.

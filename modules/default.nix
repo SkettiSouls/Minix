@@ -9,7 +9,7 @@
   inherit (lib.strings) concatStrings concatStringsSep escape stringAsChars;
   inherit (lib.attrsets) filterAttrs mapAttrs' mapAttrsToList nameValuePair optionalAttrs;
 
-  cfg = config.services.minix;
+  cfg = config.services.nix-mc;
 
   # Server config rendering
   serverPropertiesFile = serverConfig:
@@ -65,7 +65,7 @@
   '';
 in {
   options = {
-    services.minix = {
+    services.nix-mc = {
       eula = mkOption {
         type = types.bool;
         default = false;
@@ -109,7 +109,7 @@ in {
 
     # Attrset options
     perEnabledInstance = func:
-      mapAttrs' (i: c: nameValuePair "minix-${i}" (func i c)) enabledInstances;
+      mapAttrs' (i: c: nameValuePair "mc-${i}" (func i c)) enabledInstances;
 
     serverPorts =
       mapAttrsToList
@@ -188,7 +188,7 @@ in {
         };
 
         serviceConfig = let
-          WorkingDirectory = "/var/lib/minix/${name}";
+          WorkingDirectory = "/var/lib/minecraft/${name}";
         in {
           ExecStart = ''
             ${WorkingDirectory}/start.sh
@@ -196,7 +196,7 @@ in {
           Restart = "always";
           User = cfg.user;
           Group = cfg.group;
-          StateDirectory = "minix/${name}";
+          StateDirectory = "minecraft/${name}";
           inherit WorkingDirectory;
         };
 
@@ -218,7 +218,7 @@ in {
       mc = {
         createHome = true;
         group = cfg.group;
-        home = "/var/lib/minix";
+        home = "/var/lib/minecraft";
         isSystemUser = true;
       };
     };
