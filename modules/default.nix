@@ -205,13 +205,8 @@ in {
           ln -sf ${eulaFile} eula.txt
 
           # Ensure server.properties is present
-          if [[ -f server.properties ]]; then
-            mv -f server.properties server.properties.orig
-          fi
-
           # This file must be writeable, because Mojang.
-          # TODO: check if any changes were made. Don't start if so
-          cp ${serverPropertiesFile icfg.serverConfig} server.properties
+          cp -f ${serverPropertiesFile icfg.serverConfig} server.properties
           chmod 644 server.properties
 
           # Generate start.sh
