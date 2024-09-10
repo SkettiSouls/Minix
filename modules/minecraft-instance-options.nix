@@ -175,5 +175,13 @@ in {
         Bash script to be generated at <literal>/var/lib/minecraft/${name}/script.sh</literal>.
       '';
     };
+
+    generateScript = mkOption {
+      type = types.bool;
+      default = true;
+      description = ''
+        Enable generating `start.sh` script from the `startScript` option.
+      '';
+    };
   };
 }

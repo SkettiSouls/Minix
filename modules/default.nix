@@ -210,7 +210,7 @@ in {
           chmod 644 server.properties
 
           # Generate start.sh
-          cp -f ${startFile icfg.startScript} start.sh
+          ${if icfg.generateScript then ''cp -f ${startFile icfg.startScript} start.sh'' else ""}
         '';
       });
 
